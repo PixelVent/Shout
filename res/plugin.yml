@@ -1,0 +1,9 @@
+name: Shout
+main: com.pixelvent.bukkit.shout.Shout
+version: '1.0'
+commands:
+  test:
+    description: 
+    usage: 
+    permission: 
+    permission-message: 
