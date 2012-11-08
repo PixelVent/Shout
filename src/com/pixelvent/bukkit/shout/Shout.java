@@ -15,6 +15,7 @@ public class Shout extends JavaPlugin
 	public Logger log;
 	public PluginDescriptionFile desc;
 	public FileConfiguration config;
+	public FileConfiguration publicConfig;
 	public EventListener eventListener;
 	
 	public void onEnable()
@@ -24,12 +25,13 @@ public class Shout extends JavaPlugin
 		log = getLogger();
 		desc = getDescription();
 		config = YamlConfiguration.loadConfiguration(this.getResource("config.yml"));
+		publicConfig = getConfig();
 		
 		eventListener = new EventListener();
 				
 		setupCommands();
 		setupScheduledTasks();
-		loadPublicConfig();
+		reloadPublicConfig();
 	}
 
 	public void onDisable()
@@ -49,13 +51,13 @@ public class Shout extends JavaPlugin
 		
 	}
 	
-	private void loadPublicConfig()
+	private void reloadPublicConfig()
 	{
-		
+		reloadConfig();
 	}
 	
 	public String getChatPrefix()
 	{
-		return ChatColor.RED + "[] ";
+		return ChatColor.getByChar(config.getString("settings.announcerPrefix")) + "[" + config.getString("settings.announceColor") + "]" + ChatColor.RESET + " ";
 	}
 }
