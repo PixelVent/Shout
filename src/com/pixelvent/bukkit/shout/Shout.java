@@ -29,6 +29,7 @@ public class Shout extends JavaPlugin
 				
 		setupCommands();
 		setupScheduledTasks();
+		loadPublicConfig();
 	}
 
 	public void onDisable()
@@ -44,6 +45,11 @@ public class Shout extends JavaPlugin
 	}
 
 	private void setupScheduledTasks()
+	{
+		
+	}
+	
+	private void loadPublicConfig()
 	{
 		
 	}
