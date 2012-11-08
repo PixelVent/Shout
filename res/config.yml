@@ -1,4 +1,5 @@
-Announcer prefix: SHOUT
-Interval: 300
-Announce colour: RED
-Random: TRUE
+settings:
+  announcerPrefix: SHOUT
+  interval: 300
+  announceColor: &c
+  random: true
