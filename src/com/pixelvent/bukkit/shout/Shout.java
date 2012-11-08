@@ -50,6 +50,6 @@ public class Shout extends JavaPlugin
 	
 	public String getChatPrefix()
 	{
-		return ChatColor.GOLD + "[] ";
+		return ChatColor.RED + "[] ";
 	}
 }
