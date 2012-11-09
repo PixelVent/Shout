@@ -1,6 +1,6 @@
 settings:
-  announcerPrefix: SHOUT
-  interval: 300
+  announcePrefix: SHOUT
+  announceInterval: 300
   announceColor: &c
   random: true
   enabled: true

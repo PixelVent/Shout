@@ -59,6 +59,6 @@ public class Shout extends JavaPlugin
 	// Gets the chat prefix as defined in config.yml
 	public String getChatPrefix()
 	{
-		return ChatColor.getByChar(config.getString("settings.announcerPrefix")) + "[" + config.getString("settings.announceColor") + "]" + ChatColor.RESET + " ";
+		return ChatColor.getByChar(config.getString("settings.announcePrefix")) + "[" + config.getString("settings.announceColor") + "]" + ChatColor.RESET + " ";
 	}
 }
