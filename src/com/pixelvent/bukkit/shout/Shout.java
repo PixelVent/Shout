@@ -1,5 +1,7 @@
 package com.pixelvent.bukkit.shout;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 // Import required packages
 import org.bukkit.ChatColor;
@@ -17,6 +19,9 @@ public class Shout extends JavaPlugin
 	public FileConfiguration config;
 	public FileConfiguration publicConfig;
 	public EventListener eventListener;
+	
+	public ArrayList<String> announcementsList = new ArrayList<String>();
+	
 	// On plugin enable
 	public void onEnable()
 	{
@@ -24,7 +29,8 @@ public class Shout extends JavaPlugin
 		
 		log = getLogger();
 		desc = getDescription();
-                // Get config.yml resource
+		
+		// Get config.yml resource
 		config = YamlConfiguration.loadConfiguration(this.getResource("config.yml"));
 		publicConfig = getConfig();
 		
@@ -32,9 +38,26 @@ public class Shout extends JavaPlugin
 				
 		setupCommands();
 		setupScheduledTasks();
+
+		File configFile = new File(getDataFolder(), "config.yml");
+		if (!configFile.isDirectory())
+		{
+			if (!configFile.exists())
+			{
+				try
+				{
+					YamlConfiguration.loadConfiguration(getResource("publicconfig.yml")).save(configFile);
+				}
+				catch (Exception e)
+				{
+				}
+			}
+		}
+
 		reloadPublicConfig();
 	}
-        // On plugin disable
+	
+	// On plugin disable
 	public void onDisable()
 	{
 		getServer().getScheduler().cancelTasks(this);
@@ -51,11 +74,17 @@ public class Shout extends JavaPlugin
 	{
 		
 	}
+	
 	// Reload config
 	private void reloadPublicConfig()
 	{
 		reloadConfig();
+	    this.publicConfig = getConfig();
+
+	    this.announcementsList.clear();
+	    this.announcementsList = ((ArrayList<String>)this.publicConfig.getStringList("messages"));
 	}
+	
 	// Gets the chat prefix as defined in config.yml
 	public String getChatPrefix()
 	{
