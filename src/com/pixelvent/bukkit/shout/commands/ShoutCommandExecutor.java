@@ -20,7 +20,7 @@ public class ShoutCommandExecutor implements CommandExecutor
 			{
 				Shout.instance.reloadPublicConfig();
 				
-				sender.sendMessage(ChatColor.GREEN + "Configuration file reload!");
+				sender.sendMessage(ChatColor.GREEN + "Configuration file reloaded!");
 			}
 			else if(args[0].equalsIgnoreCase("interval"))
 			{
