@@ -2,13 +2,17 @@ package com.pixelvent.bukkit.shout;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Logger;
+
 // Import required packages
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.pixelvent.bukkit.shout.commands.ShoutCommandExecutor;
 
 public class Shout extends JavaPlugin
 {
@@ -20,7 +24,11 @@ public class Shout extends JavaPlugin
 	public FileConfiguration publicConfig;
 	public EventListener eventListener;
 	
+	public int announcementScheduledTaskID;
+	
 	public ArrayList<String> announcementsList = new ArrayList<String>();
+	
+	public int currentAnnouncementIndex = 0;
 	
 	// On plugin enable
 	public void onEnable()
@@ -34,11 +42,6 @@ public class Shout extends JavaPlugin
 		config = YamlConfiguration.loadConfiguration(this.getResource("config.yml"));
 		publicConfig = getConfig();
 		
-		eventListener = new EventListener();
-				
-		setupCommands();
-		setupScheduledTasks();
-
 		File configFile = new File(getDataFolder(), "config.yml");
 		if (!configFile.isDirectory())
 		{
@@ -53,8 +56,12 @@ public class Shout extends JavaPlugin
 				}
 			}
 		}
-
 		reloadPublicConfig();
+		
+		eventListener = new EventListener();
+				
+		setupCommands();
+		setupScheduledTasks();
 	}
 	
 	// On plugin disable
@@ -65,9 +72,7 @@ public class Shout extends JavaPlugin
 
 	private void setupCommands()
 	{
-		CustomCommandExecutor cce = new CustomCommandExecutor();
-		
-		
+		getCommand("shout").setExecutor(new ShoutCommandExecutor());
 	}
 
 	private void setupScheduledTasks()
@@ -75,19 +80,55 @@ public class Shout extends JavaPlugin
 		
 	}
 	
+	private void setupAnnouncementScheduledTask()
+	{
+		announcementScheduledTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
+		{
+			public void run()
+			{
+				if(publicConfig.getBoolean("settings.random"))
+				{
+					getServer().broadcastMessage(getChatPrefix() + ChatColor.getByChar(publicConfig.getString("settings.announceColor")) + announcementsList.get(new Random().nextInt(announcementsList.size())));
+				}
+				else
+				{
+					getServer().broadcastMessage(getChatPrefix() + ChatColor.getByChar(publicConfig.getString("settings.announceColor")) + announcementsList.get(currentAnnouncementIndex));
+					
+					currentAnnouncementIndex++;
+					
+					if(currentAnnouncementIndex >= announcementsList.size())
+					{
+						currentAnnouncementIndex = 0;
+					}
+				}
+			}
+		}, publicConfig.getInt("settings.announceInterval") * 20, publicConfig.getInt("settings.announceInterval") * 20);
+	}
+	
 	// Reload config
-	private void reloadPublicConfig()
+	public void reloadPublicConfig()
 	{
 		reloadConfig();
 	    this.publicConfig = getConfig();
+	    
+	    if(!publicConfig.getBoolean("settings.enabled"))
+	    {
+	    	log.warning("Plugin is disabled in config!");
+	    	getServer().getPluginManager().disablePlugin(this);
+	    }
+	    
+	    currentAnnouncementIndex = 0;
 
-	    this.announcementsList.clear();
-	    this.announcementsList = ((ArrayList<String>)this.publicConfig.getStringList("messages"));
+	    announcementsList.clear();
+	    announcementsList = ((ArrayList<String>)publicConfig.getStringList("messages"));
+	    
+	    getServer().getScheduler().cancelTask(announcementScheduledTaskID);
+	    setupAnnouncementScheduledTask();
 	}
 	
 	// Gets the chat prefix as defined in config.yml
 	public String getChatPrefix()
 	{
-		return ChatColor.getByChar(config.getString("settings.announcePrefix")) + "[" + config.getString("settings.announceColor") + "]" + ChatColor.RESET + " ";
+		return ChatColor.getByChar(publicConfig.getString("settings.announceColor")) + "[" + publicConfig.getString("settings.announcePrefix") + "]" + ChatColor.RESET + " ";
 	}
 }
