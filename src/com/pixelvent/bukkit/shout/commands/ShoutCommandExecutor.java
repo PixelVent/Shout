@@ -90,18 +90,25 @@ public class ShoutCommandExecutor implements CommandExecutor
 					sender.sendMessage(ChatColor.RED + "Command usage:\n" + ChatColor.RESET + "/shout add <MESSAGE> - Adds the specified message to the message list in the config file");
 				}
 			}
+			else if(args[0].equalsIgnoreCase("togglerandom"))
+			{
+				Shout.instance.publicConfig.set("settings.random", !Shout.instance.publicConfig.getBoolean("settings.random"));
+				Shout.instance.reloadPublicConfig();
+				
+				sender.sendMessage(ChatColor.GREEN + "Random message order option set to: " + Shout.instance.publicConfig.getBoolean("settings.random"));
+			}
 			else
 			{
 				sender.sendMessage(ChatColor.RED + "Invalid arguments!");
 				
-				sender.sendMessage(ChatColor.RED + "Command usage:\n" + ChatColor.RESET + "/shout reload - Reloads the shout configuration file\n/shout interval <SECONDS> - Sets the announcement interval time in seconds\n/shout add <MESSAGE> - Adds the specified message to the message list in the config file");
+				sender.sendMessage(ChatColor.RED + "Command usage:\n" + ChatColor.RESET + "/shout reload - Reloads the shout configuration file\n/shout interval <SECONDS> - Sets the announcement interval time in seconds\n/shout add <MESSAGE> - Adds the specified message to the message list in the config file\n/shout togglerandom - Toggles the random message order option");
 			}
 		}
 		else
 		{
 			sender.sendMessage(ChatColor.RED + "Missing arguments!");
 			
-			sender.sendMessage(ChatColor.RED + "Command usage:\n" + ChatColor.RESET + "/shout reload - Reloads the shout configuration file\n/shout interval <SECONDS> - Sets the announcement interval time in seconds\n/shout add <MESSAGE> - Adds the specified message to the message list in the config file");
+			sender.sendMessage(ChatColor.RED + "Command usage:\n" + ChatColor.RESET + "/shout reload - Reloads the shout configuration file\n/shout interval <SECONDS> - Sets the announcement interval time in seconds\n/shout add <MESSAGE> - Adds the specified message to the message list in the config file\n/shout togglerandom - Toggles the random message order option");
 		}
 		
 		return true;
