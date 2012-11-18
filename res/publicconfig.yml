@@ -1,7 +1,7 @@
 settings:
   announcePrefix: SHOUT
   announceInterval: 300
-  announceColor: &c
+  announceColor: c
   random: true
   enabled: true
 messages:
