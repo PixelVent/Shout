@@ -1,9 +1,9 @@
 name: Shout
 main: com.pixelvent.bukkit.shout.Shout
 version: '1.0'
-author: pixelvent
+author: Pixelvent
 commands:
-  test:
+  shout:
     description: 
     usage: 
     permission: 
