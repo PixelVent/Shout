@@ -88,11 +88,11 @@ public class Shout extends JavaPlugin
 			{
 				if(publicConfig.getBoolean("settings.random"))
 				{
-					getServer().broadcastMessage(getChatPrefix() + ChatColor.getByChar(publicConfig.getString("settings.announceColor")) + announcementsList.get(new Random().nextInt(announcementsList.size())));
+					getServer().broadcastMessage(getChatPrefix() + ChatColor.getByChar(publicConfig.getString("settings.announceColor")) + ChatColor.translateAlternateColorCodes('&', announcementsList.get(new Random().nextInt(announcementsList.size()))));
 				}
 				else
 				{
-					getServer().broadcastMessage(getChatPrefix() + ChatColor.getByChar(publicConfig.getString("settings.announceColor")) + announcementsList.get(currentAnnouncementIndex));
+					getServer().broadcastMessage(getChatPrefix() + ChatColor.getByChar(publicConfig.getString("settings.announceColor")) + ChatColor.translateAlternateColorCodes('&', announcementsList.get(currentAnnouncementIndex)));
 					
 					currentAnnouncementIndex++;
 					
