@@ -93,6 +93,7 @@ public class ShoutCommandExecutor implements CommandExecutor
 			else if(args[0].equalsIgnoreCase("togglerandom"))
 			{
 				Shout.instance.publicConfig.set("settings.random", !Shout.instance.publicConfig.getBoolean("settings.random"));
+				Shout.instance.saveConfig();
 				Shout.instance.reloadPublicConfig();
 				
 				sender.sendMessage(ChatColor.GREEN + "Random message order option set to: " + Shout.instance.publicConfig.getBoolean("settings.random"));
