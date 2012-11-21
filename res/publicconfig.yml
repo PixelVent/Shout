@@ -1,9 +1,8 @@
 settings:
-  announcePrefix: SHOUT
-  announceInterval: 300
-  announceColor: c
-  random: true
   enabled: true
+  announcePrefix: '&c[SHOUT] '
+  announceInterval: 300
+  random: true
 messages:
-  - "Hello World!"
-  - "Change this later"
+  - "&2Hello World!"
+  - "&6Change this later"
